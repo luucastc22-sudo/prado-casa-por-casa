@@ -1609,8 +1609,8 @@ main :is(p,li,dd,figcaption,h1,h2,h3){overflow-wrap:break-word}
     <li><span class="ley-predio"></span>Bien de interés cultural</li>
   </ul>
   <aside class="pocas" aria-labelledby="pocas-mapa"><p class="pocas-t" id="pocas-mapa">En pocas palabras</p><p>La línea punteada marca el área protegida del barrio.</p><p>Cada número es un lugar. Tócalo para saber qué es.</p><p>Más abajo está la misma información en una lista.</p><p class="pocas-acc"><button class="enlace" type="button" data-leer>Escuchar esta página</button><a href="#accesibilidad" data-ir="lsc">Lengua de Señas Colombiana</a></p></aside>
-  <p class="pie" data-sin-mapa hidden>Las calles de fondo no cargaron en esta vista. El polígono y los puntos son los reales. Con internet se ven sobre el mapa base.</p>
-  <p class="pie">Tu ubicación no se guarda ni se envía a ningún lado: solo se usa en tu celular para decirte qué te queda cerca. Mapa base: CARTO, con datos de OpenStreetMap.</p>
+  <p class="pie" data-sin-mapa hidden>Las calles de fondo no cargaron en esta vista. El polígono y los puntos son los reales. En el sitio publicado se ven sobre OpenStreetMap.</p>
+  <p class="pie">Tu ubicación no se guarda ni se envía a ningún lado: solo se usa en tu celular para decirte qué te queda cerca. Mapa base: OpenStreetMap.</p>
   <nav class="toc" aria-label="Más en esta página"><a href="#mapa" data-ir="lugares">Lugares del barrio</a><a href="#mapa" data-ir="calles">Calles con nombre</a><a href="#mapa" data-ir="datos-mapa">De dónde salen los datos</a></nav>
 </div></section>
 
@@ -1655,7 +1655,7 @@ main :is(p,li,dd,figcaption,h1,h2,h3){overflow-wrap:break-word}
     <li><a href="https://www.medellin.gov.co/servidormapas/rest/services/ordenamiento_ter/VM_22_Tratamientos_Urbanos/MapServer/0" target="_blank" rel="noopener">Tratamientos urbanos, mapa 22 del Plan de Ordenamiento Territorial</a>.</li>
     <li><a href="https://www.medellin.gov.co/servidormapas/rest/services/cultura/VC_BIC_Patrimonial/MapServer/0" target="_blank" rel="noopener">Patrimonio, bienes de interés cultural</a>. Licencia CC BY-SA 4.0, según <a href="https://www.medellin.gov.co/giscatalogacion/srv/api/records/74ea5dca-3c2c-4eef-aa89-30b7210cf362" target="_blank" rel="noopener">la ficha de la capa</a>.</li>
     <li>Estaciones del metro: coordenadas de Wikipedia.</li>
-    <li>Mapa base: <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">colaboradores de OpenStreetMap</a>, con el estilo de <a href="https://carto.com/attributions" target="_blank" rel="noopener">CARTO</a>.</li>
+    <li>Mapa base: <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">colaboradores de OpenStreetMap</a>.</li>
   </ul>
   <p class="credito">Cita que pide la Alcaldía: «Distrito Especial de Ciencia Tecnología e Innovación de Medellín - GeoMedellín - Dato proporcionado por Departamento Administrativo de Planeación».</p>
 </div></section>
@@ -2001,7 +2001,7 @@ main :is(p,li,dd,figcaption,h1,h2,h3){overflow-wrap:break-word}
 <section class="bloque" id="herramientas-y-datos"><div class="wrap">
   <h2>Herramientas y datos</h2>
   <ul class="lista-simple">
-    <li>Mapa base © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">colaboradores de OpenStreetMap</a>, con el estilo de <a href="https://carto.com/attributions" target="_blank" rel="noopener">CARTO</a>.</li>
+    <li>Mapa base © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">colaboradores de OpenStreetMap</a>.</li>
     <li><a href="https://leafletjs.com" target="_blank" rel="noopener">Leaflet</a>, licencia BSD de 2 cláusulas.</li>
     <li>qrcode-generator, de Kazuhiko Arase, licencia MIT.</li>
     <li>Fotos con licencia libre alojadas en <a href="https://commons.wikimedia.org" target="_blank" rel="noopener">Wikimedia Commons</a>.</li>
@@ -2378,7 +2378,7 @@ main :is(p,li,dd,figcaption,h1,h2,h3){overflow-wrap:break-word}
             <li>Textos y fotos propias: <a rel="license" href="${esc(SITE.licencia.url)}">${esc(SITE.licencia.nombre)}</a></li>
             <li>Artículos: Wikipedia en español, CC BY-SA 4.0</li>
             <li>Polígono y predios: Alcaldía de Medellín, GeoMedellín</li>
-            <li>Mapa base: CARTO y OpenStreetMap</li>
+            <li>Mapa base: OpenStreetMap</li>
             <li><a ${A.pag("creditos")}>Créditos y licencias</a></li>
             <li><a ${A.pag("mapa-de-sitio")}>Mapa del sitio</a></li>
           </ul>
@@ -2473,17 +2473,22 @@ main :is(p,li,dd,figcaption,h1,h2,h3){overflow-wrap:break-word}
     });
   }
 
-  /* ================= mapas (Leaflet, CARTO y OpenStreetMap) ================= */
+  /* ================= mapas (Leaflet + OpenStreetMap) ================= */
   const hayMapa = () => typeof window.L !== "undefined";
   function crearMapa(el, interactivo = true) {
     const map = L.map(el, {
       zoomSnap: .25, scrollWheelZoom: false, dragging: interactivo, touchZoom: interactivo, doubleClickZoom: interactivo,
       boxZoom: interactivo, keyboard: interactivo, zoomControl: interactivo
     });
-    const base = L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
-      subdomains: "abcd", maxZoom: 20,
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
-    }).addTo(map);
+    const base = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    });
+    if (/^https?:$/.test(location.protocol)) base.addTo(map);
+    else {
+      el.classList.add("sin-fondo");
+      const notaArchivo = $("[data-sin-mapa]", el.closest("[data-pagina]") || document);
+      if (notaArchivo) notaArchivo.hidden = false;
+    }
     let llegaron = 0, fallaron = 0;
     base.on("tileload", () => { llegaron++; });
     base.on("tileerror", () => {
